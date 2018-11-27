@@ -12,7 +12,8 @@ var movies = require('axios');
 const fs = require('fs'); 
 const moment = require('moment');
 
-// functions to be used by below ifs 
+// movieThis function 
+
 function movieThis (q) {
     var url ='http://www.omdbapi.com/?apikey=trilogy&t='+ q || usrQuery +'&type=movie'; 
 movies.default
@@ -49,6 +50,11 @@ function spotifyThis (q) {
 })
 }
 
+// concert this function 
+function concertThis (q) {
+    // awaiting update on api from TA 
+}
+
 
 if (command === 'spotify-this') {
     process.argv[3] ? spotifyThis() : spotifyThis('The Sign Ace of Base'); 
@@ -58,7 +64,9 @@ if (command === 'spotify-this') {
 else if (command === 'movie-this') {
     process.argv[3] ? movieThis() : movieThis('Mr. Nobody');
     
-}
+} 
+// do what I say function 
+// renamed to simon-says for easier usage 
 else if (command === 'simon-says') {
     fs.readFile('random.txt','utf8',function(err,data) {
         var dataArray = data.split(','); 
