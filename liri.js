@@ -49,11 +49,13 @@ function spotifyThis (q) {
 }
 
 
-if (command === 'spotify-this-song') {
-    spotifyThis();
+if (command === 'spotify-this') {
+    process.argv[3] ? spotifyThis() : spotifyThis('The Sign Ace of Base'); 
+    
+    
 }
 else if (command === 'movie-this') {
-    movieThis(); 
+    process.argv[3] ? movieThis() : movieThis('Mr. Nobody');
     
 }
 else if (command === 'simon-says') {
@@ -61,7 +63,7 @@ else if (command === 'simon-says') {
         var dataArray = data.split(','); 
         var c = dataArray[0]; 
         var q = dataArray[1]; 
-        if (c === 'spotify-this-song') {
+        if (c === 'spotify-this') {
             spotifyThis(q); 
         }
         else if (c === 'movie-this') {
