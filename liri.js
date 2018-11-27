@@ -4,12 +4,13 @@ var usrQuery = process.argv[3];
 
 
 
-// require modules 
+// required modules 
 require("dotenv").config();
 var keys = require('./keys');
 var Spotify = require('node-spotify-api');
 var movies = require('axios');
 const fs = require('fs'); 
+const moment = require('moment');
 
 // functions to be used by below ifs 
 function movieThis (q) {
