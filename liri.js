@@ -2,26 +2,26 @@
 var command = process.argv[2];
 var usrQuery = process.argv[3]; 
 
-
-
 // required modules 
 require("dotenv").config();
 var keys = require('./keys');
 var Spotify = require('node-spotify-api');
-var movies = require('axios');
 const fs = require('fs'); 
 const moment = require('moment');
+const axios = require('axios');
 
 // movieThis function 
 
 function movieThis (q) {
-    var url ='http://www.omdbapi.com/?apikey=trilogy&t='+ q || usrQuery +'&type=movie'; 
-movies.default
+    console.log('Searching for your movie...');
+    console.log(keys.movie);
+    var url ='http://www.omdbapi.com/?apikey=trilogy&t='+ usrQuery || q +'&type=movie'; 
+axios.default
     .get(url)
     .then(function (res) {
         console.log(res.data.Title);
         console.log(res.data.Year); 
-        console.log(res.data.Ratings[0].Source +' ' +res.data.Ratings[0].Value); 
+        console.log((res.data.Ratings[0] ? res.data.Ratings[0].Source : 'No IMDB Review!') + ' ' + (res.data.Ratings[0] ? res.data.Ratings[0].Value : '')); 
         console.log((res.data.Ratings[1] ? res.data.Ratings[1].Source : 'No Rotten Tomatoes Review!') + ' ' + (res.data.Ratings[1] ? res.data.Ratings[1].Value : '')); 
         console.log(res.data.Country);
         console.log(res.data.Language);
@@ -52,7 +52,20 @@ function spotifyThis (q) {
 
 // concert this function 
 function concertThis (q) {
-    // awaiting update on api from TA 
+    console.log('Searching for an upcoming concert...')
+    var app_id = keys.concert; 
+    var artist = q || usrQuery; 
+    var urlString = 'https://rest.bandsintown.com/artists/' + artist + '/events?app_id='+app_id;
+    axios.default
+    .get(urlString)
+    .then(function(res) {
+        var venueDate = res.data[0]; 
+        console.log(venueDate.venue.name);
+        console.log(venueDate.venue.city + ' ' + venueDate.venue.country);
+        var dateFormatted = moment(venueDate.datetime).format('MM/DD/YYYY');
+        console.log(dateFormatted);
+
+    })
 }
 
 
@@ -65,6 +78,9 @@ else if (command === 'movie-this') {
     process.argv[3] ? movieThis() : movieThis('Mr. Nobody');
     
 } 
+else if (command === 'concert-this') {
+    concertThis();
+}
 // do what I say function 
 // renamed to simon-says for easier usage 
 else if (command === 'simon-says') {
@@ -76,8 +92,12 @@ else if (command === 'simon-says') {
             spotifyThis(q); 
         }
         else if (c === 'movie-this') {
-            console.log('Calling Movie Search...')
+            console.log('Calling Movie Search...');
             movieThis(q);
+        }
+        else if (c === 'concert-this') {
+            console.log('Calling concert search...');
+            concertThis(q); 
         }
         
     })
