@@ -14,7 +14,6 @@ const axios = require('axios');
 
 function movieThis (q) {
     console.log('Searching for your movie...');
-    console.log(keys.movie);
     var url ='http://www.omdbapi.com/?apikey=trilogy&t='+ usrQuery || q +'&type=movie'; 
 axios.default
     .get(url)
